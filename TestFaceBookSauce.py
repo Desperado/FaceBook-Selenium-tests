@@ -12,12 +12,14 @@ class FacebookTestsOnSauce(unittest.TestCase):
                                     name="Facebook")
         self.driver = webdriver.Remote(desired_capabilities=desired_capabilities,
          command_executor="http://Desperado:3c2da000-5590-4b14-8c70-eec80cf76c26@ondemand.saucelabs.com:80/wd/hub")
+        self.email = "strazhnyk@ukr.net"
+        self.passwd = "qwerty4321"
 
     def test_login(self):
         self.driver.start_client()
         self.driver.get('http://www.facebook.com')
-        self.driver.find_element_by_id("email").send_keys("strazhnyk@ukr.net")
-        self.driver.find_element_by_id("pass").send_keys("qwerty4321")
+        self.driver.find_element_by_id("email").send_keys(self.email)
+        self.driver.find_element_by_id("pass").send_keys(self.passwd)
         self.driver.find_element_by_xpath("//*[contains(@class, 'uiButton uiButtonConfirm')]").click()
         self.assertTrue(self.driver.current_url=='http://www.facebook.com/home.php')
         
@@ -25,8 +27,8 @@ class FacebookTestsOnSauce(unittest.TestCase):
     def test_logout(self):
         self.driver.start_client()
         self.driver.get('http://www.facebook.com')
-        self.driver.find_element_by_id("email").send_keys("strazhnyk@ukr.net")
-        self.driver.find_element_by_id("pass").send_keys("qwerty4321")
+        self.driver.find_element_by_id("email").send_keys(self.email)
+        self.driver.find_element_by_id("pass").send_keys(self.passwd)
         self.driver.find_element_by_xpath("//*[contains(@class, 'uiButton uiButtonConfirm')]").click()
         self.assertTrue(self.driver.current_url=='http://www.facebook.com/home.php')
         self.driver.find_element_by_id("navAccountLink").click()
@@ -37,8 +39,8 @@ class FacebookTestsOnSauce(unittest.TestCase):
     def test_post_datetime(self):
         self.driver.start_client()
         self.driver.get('http://www.facebook.com')
-        self.driver.find_element_by_id("email").send_keys("strazhnyk@ukr.net")
-        self.driver.find_element_by_id("pass").send_keys("qwerty4321")
+        self.driver.find_element_by_id("email").send_keys(self.email)
+        self.driver.find_element_by_id("pass").send_keys(self.passwd)
         
         self.driver.find_element_by_xpath("//*[contains(@class, 'uiButton uiButtonConfirm')]").click()
         self.assertTrue(self.driver.current_url=='http://www.facebook.com/home.php')
