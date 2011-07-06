@@ -47,20 +47,22 @@ class FacebookTestsOnSauce(unittest.TestCase):
     def test_post_datetime(self):
 	"""Post current datetime as status update
 	"""
-	
+
         self.test_login()
         import time
         localtime = time.asctime( time.localtime(time.time()) )
         self.driver.find_element_by_css_selector("textarea.uiTextareaAutogrow.input.mentionsTextarea.textInput.DOMControl_placeholder").send_keys(localtime)
         self.driver.find_element_by_css_selector("label.uiOverlayButton.uiButton.uiButtonConfirm").click()   
-        self.driver.find_element_by_css_selector("a.uiTooltip.uiSelectorButton.uiButtonSuppressed.uiButtonNoText").click()
-	self.driver.find_element_by_link_text("Friends of Friends").click()
+        self.driver.find_element_by_css_selector("a.uiTooltip.uiSelectorButton.uiButtonSuppressed.uiButtonNoText").click() 	  
+        self.driver.find_element_by_link_text("Friends of Friends").click()
         self.driver.find_element_by_css_selector("label.submitBtn.uiButton.uiButtonConfirm.uiButtonLarge").click()
-	self.logout()        
+	self.assertEqual(str(self.driver.find_element_by_css_selector("span.messageBody").text).split(), localtime.split())		
+        self.logout()        
         
     def tearDown(self):
         self.driver.quit()
 
 if __name__ == '__main__':
     unittest.main()
+
  
