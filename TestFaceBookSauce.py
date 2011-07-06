@@ -15,7 +15,20 @@ class FacebookTestsOnSauce(unittest.TestCase):
         self.email = "strazhnyk@ukr.net"
         self.passwd = "qwerty4321"
 
+    def logout(self):
+	"""Logout from facebook
+	"""
+
+	self.driver.find_element_by_id("navAccountLink").click()
+        self.driver.find_element_by_css_selector("label.uiLinkButton.logoutButton").click()
+        self.assertTrue(self.driver.find_element_by_id("email"))
+        self.assertTrue(self.driver.find_element_by_id("pass"))
+    
+
     def test_login(self):
+	"""Login to facebook test
+	"""
+
         self.driver.start_client()
         self.driver.get('http://www.facebook.com')
         self.driver.find_element_by_id("email").send_keys(self.email)
@@ -25,37 +38,29 @@ class FacebookTestsOnSauce(unittest.TestCase):
         
         
     def test_logout(self):
-        self.driver.start_client()
-        self.driver.get('http://www.facebook.com')
-        self.driver.find_element_by_id("email").send_keys(self.email)
-        self.driver.find_element_by_id("pass").send_keys(self.passwd)
-        self.driver.find_element_by_xpath("//*[contains(@class, 'uiButton uiButtonConfirm')]").click()
-        self.assertTrue(self.driver.current_url=='http://www.facebook.com/home.php')
-        self.driver.find_element_by_id("navAccountLink").click()
-        self.driver.find_element_by_css_selector("label.uiLinkButton.logoutButton").click()
-        self.assertTrue(self.driver.find_element_by_id("email"))
-        self.assertTrue(self.driver.find_element_by_id("pass"))
+	"""Logout test
+	"""
+        
+	self.test_login()
+	self.logout()        
 
     def test_post_datetime(self):
-        self.driver.start_client()
-        self.driver.get('http://www.facebook.com')
-        self.driver.find_element_by_id("email").send_keys(self.email)
-        self.driver.find_element_by_id("pass").send_keys(self.passwd)
-        
-        self.driver.find_element_by_xpath("//*[contains(@class, 'uiButton uiButtonConfirm')]").click()
-        self.assertTrue(self.driver.current_url=='http://www.facebook.com/home.php')
-
+	"""Post current datetime as status update
+	"""
+	
+        self.test_login()
+        import time
         localtime = time.asctime( time.localtime(time.time()) )
         self.driver.find_element_by_css_selector("textarea.uiTextareaAutogrow.input.mentionsTextarea.textInput.DOMControl_placeholder").send_keys(localtime)
         self.driver.find_element_by_css_selector("label.uiOverlayButton.uiButton.uiButtonConfirm").click()   
         self.driver.find_element_by_css_selector("a.uiTooltip.uiSelectorButton.uiButtonSuppressed.uiButtonNoText").click()
-         
-        self.driver.find_element_by_link_text("Friends of Friends").click()
-        
+	self.driver.find_element_by_link_text("Friends of Friends").click()
         self.driver.find_element_by_css_selector("label.submitBtn.uiButton.uiButtonConfirm.uiButtonLarge").click()
-
+	self.logout()        
+        
     def tearDown(self):
         self.driver.quit()
 
 if __name__ == '__main__':
     unittest.main()
+ 
